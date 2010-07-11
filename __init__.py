@@ -9,12 +9,15 @@ File: __init__
 '''
 
 __all__ = ['getline', 'excepts']
-import platform
+import platform, warnings
 import excepts
 
 if platform.system() == 'Linux':
 	from __linux_impl import getline, Getlines
+	pass
 else:
-	raise excepts.GetlineException, "Platform %s not supported." % platform.system()
+	warnings.warn("Platform %s not supported." % platform.system())
+	from __dumb_impl import getline, Getlines
 
 del platform
+del warnings

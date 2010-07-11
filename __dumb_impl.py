@@ -16,3 +16,5 @@ class Getlines(object):
 
 	def getline(self, prompt):
 		return raw_input(prompt)
+
+getline = Getlines().getline
