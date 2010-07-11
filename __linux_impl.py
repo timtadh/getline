@@ -22,7 +22,7 @@ backspace = left + ' ' + left
 
 class Getlines(object):
 
-	def __init__(self, histfile='.hist'):
+	def __init__(self, histfile=None):
 		self.histfile = histfile
 		self.fd = sys.stdin.fileno()
 		self.curpos = [0, 0, 0]
@@ -46,6 +46,7 @@ class Getlines(object):
 		termios.tcsetattr(self.fd, termios.TCSADRAIN, self.old)
 
 	def __loadhist(self):
+		if not self.histfile: return list()
 		try:
 			f = open(self.histfile, 'r')
 		except:
@@ -60,6 +61,7 @@ class Getlines(object):
 		return hist
 
 	def __savehist(self, hist):
+		if not self.histfile: return
 		try:
 			f = open(self.histfile, 'w')
 		except:
@@ -130,12 +132,13 @@ class Getlines(object):
 
 	def getline(self, prompt='> '):
 		histpos = -1
+		curpos = self.curpos
+		self.__reset(curpos, prompt)
+		self.__mvcur((0,0))
 		sys.stdout.write(prompt)
 		sys.stdout.flush()
 		inpt = list()
 		inptpos = 0
-		curpos = self.curpos
-		self.__reset(curpos, prompt)
 		x = ''
 		while 1:
 			try:
