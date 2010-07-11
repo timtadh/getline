@@ -1,0 +1,46 @@
+            +--------------------------------------------------+
+            | Getline - A library to get text from the console |
+            +--------------------------------------------------+
+                    by  Tim Henderson
+                                 tim.tadh@hackthology.com
+
+Table of Contents
+=================
+
+1. Usage
+2. Explanation
+
+
+Usage
+=====
+
+from getline import getline
+text = getline("please enter some text: ")
+
+or
+
+from getline import Getlines
+getline = Getlines(".myhistory_file").getline
+text = getline("please enter some text: ")
+
+
+Explanation
+===========
+
+This library is meant to assist users who want to get text from the console.
+For many users, using the built-in raw_input in insufficient as it does not
+support editing the text on the line, nor does it offer command history. The
+GNU Readline Project is the obvious answer for many when confronted with this
+problem. However, GNU Readline is licensed under the GPL so it only makes since
+if you are writing "copylefted" GPL compatable software. I am releasing Getline
+under a BSD style license. If you are using it and would like more features, or
+more supported platforms, let me know!
+
+Currently I am supporting the Linux Platform, and I hope to have a Windows
+implementation shortly. If anyone has a Mac and would like to assist me in
+supporting that platform as well please email me. If one of your targeted
+platforms is not yet supported never fear, getline will still work with reduced
+functionality by using raw_input.
+
+Cheers
+Tim Henderson
