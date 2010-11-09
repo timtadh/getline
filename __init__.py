@@ -12,7 +12,7 @@ __all__ = ['getline', 'excepts']
 import platform, warnings
 import excepts
 
-if platform.system() == 'Linux':
+if platform.system() in ['Linux', 'Darwin']:
 	from __linux_impl import getline, Getlines
 	pass
 else:
