@@ -5,16 +5,14 @@ Contact: tim.tadh@hackthology.com
 Copyright (c) 2010 All Rights Reserved.
 Licensed under a BSD style license see the LICENSE file.
 
-File: __dumb_impl
-Purpose: A functionality reduced implementation.
+File: abstract
+Purpose: The abstract interface
 '''
 
-class Getlines(object):
+class AbstractGetlines(object):
 
-	def __init__(self, histfile='.hist'):
-		pass
+	def __init__(self, histfile=None):
+		self.histfile = histfile
 
 	def getline(self, prompt=''):
-		return raw_input(prompt)
-
-getline = Getlines().getline
+		pass
