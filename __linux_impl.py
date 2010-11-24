@@ -160,6 +160,9 @@ class Getlines(object):
                 inptpos = 0
                 curpos[0] = curpos[2]
                 curpos[1] = len(prompt)
+            elif ord(x) == 4: ## crtl d
+                self.__clear_line()
+                return
             elif ord(x) == 5: ## ctrl e
                 #print 'move end'
                 inptpos = len(inpt)
