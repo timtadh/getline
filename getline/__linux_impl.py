@@ -31,18 +31,21 @@ class Getlines(object):
     def __init(self):
         winsz = fcntl.ioctl(self.fd, termios.TIOCGWINSZ, "        ")
         rows, cols, xpixel, ypixel = struct.unpack('HHHH', winsz)
+        self.rows = rows
+        self.cols = cols
         self.old = termios.tcgetattr(self.fd)
+
+    def _set_new_termios(self):
         new = termios.tcgetattr(self.fd)
         new[3] = new[3] & ~ termios.ICANON
         new[3] = new[3] & ~ termios.ECHOCTL
         termios.tcsetattr(self.fd, termios.TCSADRAIN, new)
-        self.rows = rows
-        self.cols = cols
+
+    def _restore_old_termios(self):
+        termios.tcsetattr(self.fd, termios.TCSADRAIN, self.old)
 
     def __del__(self):
-        import termios
         self.__savehist(self.history)
-        termios.tcsetattr(self.fd, termios.TCSADRAIN, self.old)
 
     def __loadhist(self):
         if not self.histfile: return list()
@@ -130,6 +133,7 @@ class Getlines(object):
         sys.stdout.flush()
 
     def getline(self, prompt=''):
+        self._set_new_termios()
         histpos = -1
         curpos = self.curpos
         self.__reset(curpos, prompt)
@@ -145,6 +149,7 @@ class Getlines(object):
             except KeyboardInterrupt:
                 sys.stdout.write('\n')
                 self.__clear_line()
+                self._restore_old_termios()
                 print 'exit'
                 sys.exit(1)
             #print x, ord(x)
@@ -162,6 +167,7 @@ class Getlines(object):
                 curpos[1] = len(prompt)
             elif ord(x) == 4: ## crtl d
                 self.__clear_line()
+                self._restore_old_termios()
                 return
             elif ord(x) == 5: ## ctrl e
                 #print 'move end'
@@ -229,6 +235,7 @@ class Getlines(object):
         if inpt and (not self.history or not ''.join(self.history[-1]) == ''.join(inpt)):
             self.history.append(inpt)
         histpos = -1
+        self._restore_old_termios()
         return ''.join(inpt)
 
 getline = Getlines().getline
